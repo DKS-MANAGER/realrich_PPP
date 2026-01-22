@@ -1,0 +1,169 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{\textbf{Solution of Second-Order ODE with Boundary Conditions}}
+\author{\textbf{Name:} [Your Name] \\ \textbf{Roll Number:} [Your Roll Number]}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Course Information}
+\textbf{Course Name:} [Course Name] \\
+\textbf{Course Code:} [Course Code]
+
+\section{Problem Statement}
+The objective is to solve the following second-order ordinary differential equation (ODE):
+\begin{equation}
+    \frac{d^2u}{dx^2} = 2, \quad 0 \le x \le 1
+\end{equation}
+subject to the Dirichlet boundary conditions:
+\begin{equation}
+    u(0) = 0, \quad u(1) = 0
+\end{equation}
+This report covers three tasks:
+\begin{enumerate}
+    \item Derivation of the exact analytical solution.
+    \item Numerical solution using the Finite Difference Method (FDM) with $N=5$ and $N=7$ grid points.
+    \item Error analysis and comparison of results.
+\end{enumerate}
+
+\section{Analytical Solution}
+Integrating the ODE $\frac{d^2u}{dx^2} = 2$ with respect to $x$:
+\begin{equation}
+    \frac{du}{dx} = 2x + C_1
+\end{equation}
+Integrating again:
+\begin{equation}
+    u(x) = x^2 + C_1 x + C_2
+\end{equation}
+Applying the boundary conditions:
+\begin{itemize}
+    \item At $x=0$, $u(0)=0 \implies 0^2 + C_1(0) + C_2 = 0 \implies C_2 = 0$.
+    \item At $x=1$, $u(1)=0 \implies 1^2 + C_1(1) + 0 = 0 \implies C_1 = -1$.
+\end{itemize}
+Substituting the constants back into the general solution, we obtain the exact analytical solution:
+\begin{equation}
+    u_{analytical}(x) = x^2 - x
+\end{equation}
+
+\section{Numerical Solution Using Finite Difference Method}
+\subsection{Methodology}
+The domain $[0, 1]$ is discretized into $N$ points with a uniform step size $h = \frac{1}{N-1}$. The second derivative is approximated using the central difference scheme:
+\begin{equation}
+    \frac{u_{i+1} - 2u_i + u_{i-1}}{h^2} = 2
+\end{equation}
+Rearranging gives the linear equation for each interior node $i$:
+\begin{equation}
+    u_{i-1} - 2u_i + u_{i+1} = 2h^2
+\end{equation}
+This forms a system of linear equations $A \mathbf{u} = \mathbf{b}$, where $A$ is a tridiagonal matrix.
+
+\subsection{Matrix Formulation}
+\textbf{Case 1: N = 5} ($h = 0.25$) \\
+Number of interior nodes = 3. System size is $3 \times 3$.
+\[
+\begin{bmatrix}
+-2 & 1 & 0 \\
+1 & -2 & 1 \\
+0 & 1 & -2
+\end{bmatrix}
+\begin{bmatrix}
+u_1 \\ u_2 \\ u_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+2h^2 \\ 2h^2 \\ 2h^2
+\end{bmatrix}
+\]
+
+\textbf{Case 2: N = 7} ($h = 1/6 \approx 0.1667$) \\
+Number of interior nodes = 5. System size is $5 \times 5$.
+\[
+\begin{bmatrix}
+-2 & 1 & 0 & 0 & 0 \\
+1 & -2 & 1 & 0 & 0 \\
+0 & 1 & -2 & 1 & 0 \\
+0 & 0 & 1 & -2 & 1 \\
+0 & 0 & 0 & 1 & -2
+\end{bmatrix}
+\begin{bmatrix}
+u_1 \\ u_2 \\ u_3 \\ u_4 \\ u_5
+\end{bmatrix}
+=
+\begin{bmatrix}
+2h^2 \\ 2h^2 \\ 2h^2 \\ 2h^2 \\ 2h^2
+\end{bmatrix}
+\]
+
+\subsection{Discrete Solutions}
+The numerical solutions obtained for N=5 and N=7 are visualized below.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{solution_comparison.png}
+    \caption{Comparison of Analytical and FDM Solutions for N=5 and N=7}
+    \label{fig:comparison}
+\end{figure}
+
+\section{Comparison and Error Analysis}
+The pointwise percentage error is defined as:
+\begin{equation}
+    \text{Error} (\%) = \left| \frac{u_{numerical} - u_{analytical}}{u_{analytical}} \right| \times 100
+\end{equation}
+(Note: Analysis excludes boundary points where $u=0$).
+
+\subsection{Error Results}
+The computed errors were found to be on the order of machine precision ($10^{-16}$).
+
+\begin{table}[H]
+    \centering
+    \caption{Results for N=5}
+    \begin{tabular}{cccc}
+        \toprule
+        x & $u_{FDM}$ & $u_{Exact}$ & Abs Difference \\
+        \midrule
+        0.00 & 0.0000 & 0.0000 & 0.0000 \\
+        0.25 & -0.1875 & -0.1875 & $\approx 0$ \\
+        0.50 & -0.2500 & -0.2500 & $\approx 0$ \\
+        0.75 & -0.1875 & -0.1875 & $\approx 0$ \\
+        1.00 & 0.0000 & 0.0000 & 0.0000 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Results for N=7}
+    \begin{tabular}{cccc}
+        \toprule
+        x & $u_{FDM}$ & $u_{Exact}$ & Abs Difference \\
+        \midrule
+        0.00 & 0.0000 & 0.0000 & 0.0000 \\
+        0.17 & -0.1389 & -0.1389 & $\approx 0$ \\
+        0.33 & -0.2222 & -0.2222 & $\approx 0$ \\
+        0.50 & -0.2500 & -0.2500 & $\approx 0$ \\
+        0.67 & -0.2222 & -0.2222 & $\approx 0$ \\
+        0.83 & -0.1389 & -0.1389 & $\approx 0$ \\
+        1.00 & 0.0000 & 0.0000 & 0.0000 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Discussion}
+\begin{itemize}
+    \item \textbf{Accuracy:} The FDM solution matches the exact analytical solution almost perfectly (errors $< 10^{-15}$). This is because the central difference scheme is exact for quadratic functions like $u(x) = x^2 - x$. The only errors present are due to floating-point arithmetic.
+    \item \textbf{Grid Refinement:} Increasing grid points from 5 to 7 did not significantly change the accuracy in this specific case, as the method had already achieved exactness. For higher-order problems, more points would typically reduce the discretization error.
+    \item \textbf{Computational Efficiency:} The tridiagonal system is very efficient to solve (can be solved in $O(N)$ time).
+\end{itemize}
+
+\section{Conclusion}
+The Finite Difference Method (FDM) was successfully applied to solve $u''=2$. The numerical results showed excellent agreement with the analytical solution $u(x)=x^2-x$. The error analysis confirms that for this specific quadratic problem, the second-order central difference scheme introduces practically zero truncation error.
+
+\end{document}

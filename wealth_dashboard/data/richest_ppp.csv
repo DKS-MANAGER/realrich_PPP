@@ -1,0 +1,51 @@
+rank_nominal,name,net_worth_USD,source_of_USD_value,primary_country,exchange_rate_date,exchange_rate_local_per_USD,PPP_source_and_year,PPP_conversion_factor,net_worth_PPP_intl$,percent_difference_vs_nominal_USD,notes
+1,Elon Musk,342.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,342.0,0.0,
+2,Mark Zuckerberg,216.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,216.0,0.0,
+3,Jeff Bezos,215.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,215.0,0.0,
+4,Larry Ellison,192.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,192.0,0.0,
+5,Bernard Arnault & family,178.0,Forbes RT 2026-01-22,France,2026-01-22,0.92,World Bank 2026,0.7,233.94,31.43,Significant PPP adjustment (>20%)
+6,Warren Buffett,154.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,154.0,0.0,
+7,Larry Page,144.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,144.0,0.0,
+8,Sergey Brin,138.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,138.0,0.0,
+9,Amancio Ortega,124.0,Forbes RT 2026-01-22,Spain,2026-01-22,0.92,World Bank 2026,0.57,200.14,61.4,Major PPP adjustment (>50%)
+10,Steve Ballmer,118.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,118.0,0.0,
+11,Bill Gates,135.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,135.0,0.0,
+12,Michael Bloomberg,122.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,122.0,0.0,
+13,Mukesh Ambani,110.0,Forbes RT 2026-01-22,India,2026-01-22,83.42,World Bank 2026,20.42,449.37,308.52,Major PPP adjustment (>50%)
+14,Gautam Adani,105.0,Forbes RT 2026-01-22,India,2026-01-22,83.42,World Bank 2026,20.42,428.95,308.52,Major PPP adjustment (>50%)
+15,Carlos Slim Helu & family,102.0,Forbes RT 2026-01-22,Mexico,2026-01-22,17.0,World Bank 2026,10.09,171.85,68.48,Major PPP adjustment (>50%)
+16,Francoise Bettencourt Meyers & family,99.0,Forbes RT 2026-01-22,France,2026-01-22,0.92,World Bank 2026,0.7,130.11,31.43,Significant PPP adjustment (>20%)
+17,Michael Dell,95.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,95.0,0.0,
+18,Jensen Huang,92.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,92.0,0.0,
+19,Jim Walton,88.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,88.0,0.0,
+20,Rob Walton,87.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,87.0,0.0,
+21,Alice Walton,86.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,86.0,0.0,
+22,David Thomson & family,78.0,Forbes RT 2026-01-22,Canada,2026-01-22,1.35,World Bank 2026,1.14,92.37,18.42,
+23,Zhong Shanshan,75.0,Forbes RT 2026-01-22,China,2026-01-22,7.24,World Bank 2026,3.53,153.82,105.1,Major PPP adjustment (>50%)
+24,Charles Koch,68.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,68.0,0.0,
+25,Julia Koch & family,68.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,68.0,0.0,
+26,Dieter Schwarz,55.0,Forbes RT 2026-01-22,Germany,2026-01-22,0.92,World Bank 2026,0.71,71.27,29.58,Significant PPP adjustment (>20%)
+27,Zhang Yiming,50.0,Forbes RT 2026-01-22,China,2026-01-22,7.24,World Bank 2026,3.53,102.55,105.1,Major PPP adjustment (>50%)
+28,Phil Knight & family,48.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,48.0,0.0,
+29,Mark Mateschitz,45.0,Forbes RT 2026-01-22,Austria,2026-01-22,0.92,World Bank 2026,0.71,58.31,29.58,Significant PPP adjustment (>20%)
+30,Tadashi Yanai & family,44.0,Forbes RT 2026-01-22,Japan,2026-01-22,148.0,World Bank 2026,95.11,68.47,55.61,Major PPP adjustment (>50%)
+31,Giovanni Ferrero,43.8,Forbes RT 2026-01-22,Italy,2026-01-22,0.92,World Bank 2026,0.65,61.99,41.54,Significant PPP adjustment (>20%)
+32,MacKenzie Scott,43.6,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,43.6,0.0,
+33,Ma Huateng,43.4,Forbes RT 2026-01-22,China,2026-01-22,7.24,World Bank 2026,3.53,89.01,105.1,Major PPP adjustment (>50%)
+34,Ken Griffin,43.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,43.0,0.0,
+35,Stephen Schwarzman,42.5,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,42.5,0.0,
+36,Gina Rinehart,41.5,Forbes RT 2026-01-22,Australia,2026-01-22,1.52,World Bank 2026,1.44,43.81,5.56,
+37,John Mars,41.2,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,41.2,0.0,
+38,Jacqueline Mars,41.2,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,41.2,0.0,
+39,Len Blavatnik,40.5,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,40.5,0.0,
+40,Savitri Jindal & family,39.8,Forbes RT 2026-01-22,India,2026-01-22,83.42,World Bank 2026,20.42,162.59,308.52,Major PPP adjustment (>50%)
+41,Thomas Peterffy,39.0,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,39.0,0.0,
+42,Miriam Adelson & family,38.5,Forbes RT 2026-01-22,United States,2026-01-22,1.0,World Bank 2026,1.0,38.5,0.0,
+43,Colin Huang,38.2,Forbes RT 2026-01-22,China,2026-01-22,7.24,World Bank 2026,3.53,78.35,105.1,Major PPP adjustment (>50%)
+44,William Ding,37.5,Forbes RT 2026-01-22,China,2026-01-22,7.24,World Bank 2026,3.53,76.91,105.1,Major PPP adjustment (>50%)
+45,Shiv Nadar,37.2,Forbes RT 2026-01-22,India,2026-01-22,83.42,World Bank 2026,20.42,151.97,308.52,Major PPP adjustment (>50%)
+46,Alain Wertheimer,36.8,Forbes RT 2026-01-22,France,2026-01-22,0.92,World Bank 2026,0.7,48.37,31.43,Significant PPP adjustment (>20%)
+47,Gerard Wertheimer,36.8,Forbes RT 2026-01-22,France,2026-01-22,0.92,World Bank 2026,0.7,48.37,31.43,Significant PPP adjustment (>20%)
+48,German Larrea Mota Velasco & family,36.2,Forbes RT 2026-01-22,Mexico,2026-01-22,17.0,World Bank 2026,10.09,60.99,68.48,Major PPP adjustment (>50%)
+49,Klaus-Michael Kuehne,35.5,Forbes RT 2026-01-22,Germany,2026-01-22,0.92,World Bank 2026,0.71,46.0,29.58,Significant PPP adjustment (>20%)
+50,Low Tuck Kwong,35.0,Forbes RT 2026-01-22,Indonesia,2026-01-22,15500.0,World Bank 2026,4747.91,114.26,226.46,Major PPP adjustment (>50%)

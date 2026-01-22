@@ -1,0 +1,36 @@
+/* Sidebar: Dark Premium Theme */
+section[data-testid="stSidebar"] {
+    background-color: #1a1c24;
+    color: #e0e0e0;
+}
+
+h1, h2, h3 {
+    font-family: "Inter", sans-serif;
+}
+
+/* KPI Cards: Bordered & Elevated */
+div[data-testid="stMetric"] {
+    background-color: #262730;
+    border: 1px solid #41444e;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* KPI Label Color fix for dark card */
+div[data-testid="stMetric"] label {
+    color: #aeb5bc;
+}
+
+/* Tabs: Larger & Distinct */
+div[data-testid="stTabs"] button {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+/* Reduce top padding */
+div.block-container {
+    padding-top: 2rem !important;
+}
+
+/* Fix Search Box styling if possible (remove red border defaults often just requires clean input) */

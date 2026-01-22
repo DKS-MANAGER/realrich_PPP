@@ -1,0 +1,11 @@
+ID,Name,Age,Department,JoiningDate,Salary,Experience,Location,Bonus,NewSalary,Seniority
+101,John,28,HR,2019-05-21,50000,7,San Francisco,5000.0,52500.0,Mid
+102,Alice,34,IT,2017-03-15,75000,3,New York,7500.0,78750.0,Junior
+103,Bob,25,Finance,2020-11-12,48000,2,Chicago,4800.0,50400.0,Junior
+104,David,42,IT,2010-07-30,95000,12,San Francisco,9500.0,99750.0,Senior
+105,Eva,29,HR,2018-01-25,52000,4,New York,5200.0,54600.0,Junior
+106,Frank,38,Finance,2012-09-17,88000,10,Chicago,8800.0,92400.0,Senior
+107,Grace,31,IT,2016-05-21,72000,6,San Francisco,7200.0,75600.0,Mid
+108,Hannah,27,HR,2021-02-01,49000,2,New York,4900.0,51450.0,Junior
+109,Ian,36,Finance,2014-06-10,83000,8,Chicago,8300.0,87150.0,Mid
+110,Jane,30,IT,2019-08-19,68000,5,San Francisco,6800.0,71400.0,Mid

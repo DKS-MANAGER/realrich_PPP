@@ -1,0 +1,11 @@
+ID,Name,Age,Department,JoiningDate,Salary,Experience,Location
+101,John,28,HR,5/21/2019,50000,7,San Francisco
+102,Alice,34,IT,3/15/2017,75000,3,New York
+103,Bob,25,Finance,11/12/2020,48000,2,Chicago
+104,David,42,IT,7/30/2010,95000,12,San Francisco
+105,Eva,29,HR,1/25/2018,52000,4,New York
+106,Frank,38,Finance,9/17/2012,88000,10,Chicago
+107,Grace,31,IT,5/21/2016,72000,6,San Francisco
+108,Hannah,27,HR,2/1/2021,49000,2,New York
+109,Ian,36,Finance,6/10/2014,83000,8,Chicago
+110,Jane,30,IT,8/19/2019,68000,5,San Francisco
