@@ -1,8 +1,0 @@
-prophet
-pandas
-numpy
-plotly
-scikit-learn
-statsmodels
-wbdata
-dash
