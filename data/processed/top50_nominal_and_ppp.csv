@@ -1,51 +1,51 @@
 rank_nominal,name,net_worth_usd,country,source,fx_rate,ppp_factor,ppp_multiplier,net_worth_ppp,ppp_uplift_pct,rank_ppp,rank_change,net_worth_usd_billion,net_worth_ppp_intl$,net_worth_PPP_intl$,pct_change_vs_nominal,percent_difference_vs_nominal_USD,primary_country,exchange_rate_local_per_USD,ppp_conversion_factor,rank
-1,Elon Musk,342.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,342.0,0.0,3,-2,342.0,342.0,342.0,0.0,0.0,United States,1.0,1.0,1
-2,Mark Zuckerberg,216.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,216.0,0.0,5,-3,216.0,216.0,216.0,0.0,0.0,United States,1.0,1.0,2
-3,Jeff Bezos,215.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,215.0,0.0,6,-3,215.0,215.0,215.0,0.0,0.0,United States,1.0,1.0,3
-4,Larry Ellison,192.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,192.0,0.0,9,-5,192.0,192.0,192.0,0.0,0.0,United States,1.0,1.0,4
-5,Bernard Arnault & family,178.0,France,Forbes RT 2026-01-22,0.92,0.7,1.3143,233.95,31.43,4,1,178.0,233.95,233.95,31.43,31.43,France,0.92,0.7,5
-6,Warren Buffett,154.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,154.0,0.0,12,-6,154.0,154.0,154.0,0.0,0.0,United States,1.0,1.0,6
-7,Larry Page,144.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,144.0,0.0,14,-7,144.0,144.0,144.0,0.0,0.0,United States,1.0,1.0,7
-8,Sergey Brin,138.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,138.0,0.0,15,-7,138.0,138.0,138.0,0.0,0.0,United States,1.0,1.0,8
-9,Bill Gates,135.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,135.0,0.0,16,-7,135.0,135.0,135.0,0.0,0.0,United States,1.0,1.0,9
-10,Amancio Ortega,124.0,Spain,Forbes RT 2026-01-22,0.92,0.57,1.614,200.14,61.4,7,3,124.0,200.14,200.14,61.4,61.4,Spain,0.92,0.57,10
-11,Michael Bloomberg,122.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,122.0,0.0,18,-7,122.0,122.0,122.0,0.0,0.0,United States,1.0,1.0,11
-12,Steve Ballmer,118.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,118.0,0.0,20,-8,118.0,118.0,118.0,0.0,0.0,United States,1.0,1.0,12
-13,Mukesh Ambani,110.0,India,Forbes RT 2026-01-22,83.42,20.42,4.0852,449.37,308.52,1,12,110.0,449.37,449.37,308.52,308.52,India,83.42,20.42,13
-14,Gautam Adani,105.0,India,Forbes RT 2026-01-22,83.42,20.42,4.0852,428.95,308.52,2,12,105.0,428.95,428.95,308.52,308.52,India,83.42,20.42,14
-15,Carlos Slim Helu & family,102.0,Mexico,Forbes RT 2026-01-22,17.0,8.89,1.9123,195.05,91.23,8,7,102.0,195.05,195.05,91.23,91.23,Mexico,17.0,8.89,15
-16,Francoise Bettencourt Meyers & family,99.0,France,Forbes RT 2026-01-22,0.92,0.7,1.3143,130.12,31.43,17,-1,99.0,130.12,130.12,31.43,31.43,France,0.92,0.7,16
-17,Michael Dell,95.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,95.0,0.0,26,-9,95.0,95.0,95.0,0.0,0.0,United States,1.0,1.0,17
-18,Jensen Huang,92.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,92.0,0.0,27,-9,92.0,92.0,92.0,0.0,0.0,United States,1.0,1.0,18
-19,Jim Walton,88.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,88.0,0.0,28,-9,88.0,88.0,88.0,0.0,0.0,United States,1.0,1.0,19
-20,Rob Walton,87.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,87.0,0.0,29,-9,87.0,87.0,87.0,0.0,0.0,United States,1.0,1.0,20
-21,Alice Walton,86.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,86.0,0.0,30,-9,86.0,86.0,86.0,0.0,0.0,United States,1.0,1.0,21
-22,David Thomson & family,78.0,Canada,Forbes RT 2026-01-22,1.36,1.24,1.0968,85.55,9.68,31,-9,78.0,85.55,85.55,9.68,9.68,Canada,1.36,1.24,22
-23,Zhong Shanshan,75.0,China,Forbes RT 2026-01-22,7.2,3.5,2.0571,154.28,105.71,11,12,75.0,154.28,154.28,105.71,105.71,China,7.2,3.5,23
-24,Charles Koch,68.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,68.0,0.0,35,-11,68.0,68.0,68.0,0.0,0.0,United States,1.0,1.0,24
-25,Julia Koch & family,68.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,68.0,0.0,35,-10,68.0,68.0,68.0,0.0,0.0,United States,1.0,1.0,25
-26,Dieter Schwarz,55.0,Germany,Forbes RT 2026-01-22,0.92,0.73,1.2603,69.32,26.04,33,-7,55.0,69.32,69.32,26.04,26.04,Germany,0.92,0.73,26
-27,Zhang Yiming,50.0,China,Forbes RT 2026-01-22,7.2,3.5,2.0571,102.86,105.72,24,3,50.0,102.86,102.86,105.72,105.72,China,7.2,3.5,27
-28,Phil Knight & family,48.0,United States,Forbes RT 2026-01-22,1.0,1.0,1.0,48.0,0.0,44,-16,48.0,48.0,48.0,0.0,0.0,United States,1.0,1.0,28
-29,Mark Mateschitz,45.0,Austria,Forbes RT 2026-01-22,0.92,0.76,1.2105,54.47,21.04,40,-11,45.0,54.47,54.47,21.04,21.04,Austria,0.92,0.76,29
-30,Tadashi Yanai & family,44.0,Japan,Forbes RT 2026-01-22,145.0,93.0,1.5591,68.6,55.91,34,-4,44.0,68.6,68.6,55.91,55.91,Japan,145.0,93.0,30
-31,Giovanni Ferrero,43.8,Italy,Forbes RT 2026-01-22,0.92,0.67,1.3731,60.14,37.31,39,-8,43.8,60.14,60.14,37.31,37.31,Italy,0.92,0.67,31
-32,Savitri Jindal & family,39.8,India,Forbes RT 2026-01-22,83.42,20.42,4.0852,162.59,308.52,10,22,39.8,162.59,162.59,308.52,308.52,India,83.42,20.42,32
-33,Colin Huang,38.2,China,Forbes RT 2026-01-22,7.2,3.5,2.0571,78.58,105.71,32,1,38.2,78.58,78.58,105.71,105.71,China,7.2,3.5,33
-34,Li Ka-shing,37.3,Hong Kong,Forbes RT 2026-01-22,7.8,5.5,1.4182,52.9,41.82,43,-9,37.3,52.9,52.9,41.82,41.82,Hong Kong,7.8,5.5,34
-35,Shiv Nadar,37.2,India,Forbes RT 2026-01-22,83.42,20.42,4.0852,151.97,308.52,13,22,37.2,151.97,151.97,308.52,308.52,India,83.42,20.42,35
-36,Klaus-Michael Kuehne,36.8,Germany,Forbes RT 2026-01-22,0.92,0.73,1.2603,46.38,26.03,45,-9,36.8,46.38,46.38,26.03,26.03,Germany,0.92,0.73,36
-37,Low Tuck Kwong,35.0,Indonesia,Forbes RT 2026-01-22,15450.0,4512.0,3.4242,119.85,242.43,19,18,35.0,119.85,119.85,242.43,242.43,Indonesia,15450.0,4512.0,37
-38,Tony Bloom,35.0,United Kingdom,Forbes RT 2026-01-22,0.79,0.7,1.1286,39.5,12.86,46,-8,35.0,39.5,39.5,12.86,12.86,United Kingdom,0.79,0.7,38
-39,Masayoshi Son,34.0,Japan,Forbes RT 2026-01-20,145.0,93.0,1.5591,53.01,55.91,42,-3,34.0,53.01,53.01,55.91,55.91,Japan,145.0,93.0,39
-40,William Lei Ding,33.0,China,Forbes RT 2026-01-20,7.2,3.5,2.0571,67.88,105.7,37,3,33.0,67.88,67.88,105.7,105.7,China,7.2,3.5,40
-41,He Xiangjian,32.0,China,Forbes RT 2026-01-20,7.2,3.5,2.0571,65.83,105.72,38,3,32.0,65.83,65.83,105.72,105.72,China,7.2,3.5,41
-42,Charles de Croes de Liedekerke,31.5,Belgium,Forbes RT 2026-01-20,0.92,0.75,1.2267,38.64,22.67,47,-5,31.5,38.64,38.64,22.67,22.67,Belgium,0.92,0.75,42
-43,Stephen Schwarzman,31.0,United States,Forbes RT 2026-01-20,1.0,1.0,1.0,31.0,0.0,49,-6,31.0,31.0,31.0,0.0,0.0,United States,1.0,1.0,43
-44,R. Budi Hartono,31.0,Indonesia,Forbes RT 2026-01-20,15450.0,4512.0,3.4242,106.15,242.42,21,23,31.0,106.15,106.15,242.42,242.42,Indonesia,15450.0,4512.0,44
-45,Michael Hartono,30.0,Indonesia,Forbes RT 2026-01-20,15450.0,4512.0,3.4242,102.73,242.43,25,20,30.0,102.73,102.73,242.43,242.43,Indonesia,15450.0,4512.0,45
-46,Len Blavatnik,30.0,United States,Forbes RT 2026-01-20,1.0,1.0,1.0,30.0,0.0,50,-4,30.0,30.0,30.0,0.0,0.0,United States,1.0,1.0,46
-47,Vladimir Potanin,29.1,Russia,Forbes RT 2026-01-20,100.0,27.5,3.6364,105.82,263.64,22,25,29.1,105.82,105.82,263.64,263.64,Russia,100.0,27.5,47
-48,Dietrich Mateschitz (estate),28.5,Austria,Forbes RT 2026-01-20,0.92,0.76,1.2105,34.5,21.05,48,0,28.5,34.5,34.5,21.05,21.05,Austria,0.92,0.76,48
-49,Roman Abramovich,28.5,Russia,Forbes RT 2026-01-20,100.0,27.5,3.6364,103.64,263.65,23,26,28.5,103.64,103.64,263.65,263.65,Russia,100.0,27.5,49
-50,Jack Ma,26.4,China,Forbes RT 2026-01-20,7.2,3.5,2.0571,54.31,105.72,41,9,26.4,54.31,54.31,105.72,105.72,China,7.2,3.5,50
+1,Elon Musk,342.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,342.0,0.0,3,-2,342.0,342.0,342.0,0.0,0.0,United States,1.0,1.0,1
+2,Mark Zuckerberg,216.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,216.0,0.0,5,-3,216.0,216.0,216.0,0.0,0.0,United States,1.0,1.0,2
+3,Jeff Bezos,215.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,215.0,0.0,6,-3,215.0,215.0,215.0,0.0,0.0,United States,1.0,1.0,3
+4,Larry Ellison,192.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,192.0,0.0,9,-5,192.0,192.0,192.0,0.0,0.0,United States,1.0,1.0,4
+5,Bernard Arnault & family,178.0,France,Forbes RT 2026-09-07,0.92,0.7,1.3143,233.95,31.43,4,1,178.0,233.95,233.95,31.43,31.43,France,0.92,0.7,5
+6,Warren Buffett,154.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,154.0,0.0,12,-6,154.0,154.0,154.0,0.0,0.0,United States,1.0,1.0,6
+7,Larry Page,144.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,144.0,0.0,14,-7,144.0,144.0,144.0,0.0,0.0,United States,1.0,1.0,7
+8,Sergey Brin,138.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,138.0,0.0,15,-7,138.0,138.0,138.0,0.0,0.0,United States,1.0,1.0,8
+9,Bill Gates,135.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,135.0,0.0,16,-7,135.0,135.0,135.0,0.0,0.0,United States,1.0,1.0,9
+10,Amancio Ortega,124.0,Spain,Forbes RT 2026-09-07,0.92,0.57,1.614,200.14,61.4,7,3,124.0,200.14,200.14,61.4,61.4,Spain,0.92,0.57,10
+11,Michael Bloomberg,122.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,122.0,0.0,18,-7,122.0,122.0,122.0,0.0,0.0,United States,1.0,1.0,11
+12,Steve Ballmer,118.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,118.0,0.0,20,-8,118.0,118.0,118.0,0.0,0.0,United States,1.0,1.0,12
+13,Mukesh Ambani,110.0,India,Forbes RT 2026-09-07,83.42,20.42,4.0852,449.37,308.52,1,12,110.0,449.37,449.37,308.52,308.52,India,83.42,20.42,13
+14,Gautam Adani,105.0,India,Forbes RT 2026-09-07,83.42,20.42,4.0852,428.95,308.52,2,12,105.0,428.95,428.95,308.52,308.52,India,83.42,20.42,14
+15,Carlos Slim Helu & family,102.0,Mexico,Forbes RT 2026-09-07,17.0,8.89,1.9123,195.05,91.23,8,7,102.0,195.05,195.05,91.23,91.23,Mexico,17.0,8.89,15
+16,Francoise Bettencourt Meyers & family,99.0,France,Forbes RT 2026-09-07,0.92,0.7,1.3143,130.12,31.43,17,-1,99.0,130.12,130.12,31.43,31.43,France,0.92,0.7,16
+17,Michael Dell,95.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,95.0,0.0,26,-9,95.0,95.0,95.0,0.0,0.0,United States,1.0,1.0,17
+18,Jensen Huang,92.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,92.0,0.0,27,-9,92.0,92.0,92.0,0.0,0.0,United States,1.0,1.0,18
+19,Jim Walton,88.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,88.0,0.0,28,-9,88.0,88.0,88.0,0.0,0.0,United States,1.0,1.0,19
+20,Rob Walton,87.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,87.0,0.0,29,-9,87.0,87.0,87.0,0.0,0.0,United States,1.0,1.0,20
+21,Alice Walton,86.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,86.0,0.0,30,-9,86.0,86.0,86.0,0.0,0.0,United States,1.0,1.0,21
+22,David Thomson & family,78.0,Canada,Forbes RT 2026-09-07,1.36,1.24,1.0968,85.55,9.68,31,-9,78.0,85.55,85.55,9.68,9.68,Canada,1.36,1.24,22
+23,Zhong Shanshan,75.0,China,Forbes RT 2026-09-07,7.2,3.5,2.0571,154.28,105.71,11,12,75.0,154.28,154.28,105.71,105.71,China,7.2,3.5,23
+24,Charles Koch,68.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,68.0,0.0,35,-11,68.0,68.0,68.0,0.0,0.0,United States,1.0,1.0,24
+25,Julia Koch & family,68.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,68.0,0.0,35,-10,68.0,68.0,68.0,0.0,0.0,United States,1.0,1.0,25
+26,Dieter Schwarz,55.0,Germany,Forbes RT 2026-09-07,0.92,0.73,1.2603,69.32,26.04,33,-7,55.0,69.32,69.32,26.04,26.04,Germany,0.92,0.73,26
+27,Zhang Yiming,50.0,China,Forbes RT 2026-09-07,7.2,3.5,2.0571,102.86,105.72,24,3,50.0,102.86,102.86,105.72,105.72,China,7.2,3.5,27
+28,Phil Knight & family,48.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,48.0,0.0,44,-16,48.0,48.0,48.0,0.0,0.0,United States,1.0,1.0,28
+29,Mark Mateschitz,45.0,Austria,Forbes RT 2026-09-07,0.92,0.76,1.2105,54.47,21.04,40,-11,45.0,54.47,54.47,21.04,21.04,Austria,0.92,0.76,29
+30,Tadashi Yanai & family,44.0,Japan,Forbes RT 2026-09-07,145.0,93.0,1.5591,68.6,55.91,34,-4,44.0,68.6,68.6,55.91,55.91,Japan,145.0,93.0,30
+31,Giovanni Ferrero,43.8,Italy,Forbes RT 2026-09-07,0.92,0.67,1.3731,60.14,37.31,39,-8,43.8,60.14,60.14,37.31,37.31,Italy,0.92,0.67,31
+32,Savitri Jindal & family,39.8,India,Forbes RT 2026-09-07,83.42,20.42,4.0852,162.59,308.52,10,22,39.8,162.59,162.59,308.52,308.52,India,83.42,20.42,32
+33,Colin Huang,38.2,China,Forbes RT 2026-09-07,7.2,3.5,2.0571,78.58,105.71,32,1,38.2,78.58,78.58,105.71,105.71,China,7.2,3.5,33
+34,Li Ka-shing,37.3,Hong Kong,Forbes RT 2026-09-07,7.8,5.5,1.4182,52.9,41.82,43,-9,37.3,52.9,52.9,41.82,41.82,Hong Kong,7.8,5.5,34
+35,Shiv Nadar,37.2,India,Forbes RT 2026-09-07,83.42,20.42,4.0852,151.97,308.52,13,22,37.2,151.97,151.97,308.52,308.52,India,83.42,20.42,35
+36,Klaus-Michael Kuehne,36.8,Germany,Forbes RT 2026-09-07,0.92,0.73,1.2603,46.38,26.03,45,-9,36.8,46.38,46.38,26.03,26.03,Germany,0.92,0.73,36
+37,Low Tuck Kwong,35.0,Indonesia,Forbes RT 2026-09-07,15450.0,4512.0,3.4242,119.85,242.43,19,18,35.0,119.85,119.85,242.43,242.43,Indonesia,15450.0,4512.0,37
+38,Tony Bloom,35.0,United Kingdom,Forbes RT 2026-09-07,0.79,0.7,1.1286,39.5,12.86,46,-8,35.0,39.5,39.5,12.86,12.86,United Kingdom,0.79,0.7,38
+39,Masayoshi Son,34.0,Japan,Forbes RT 2026-09-07,145.0,93.0,1.5591,53.01,55.91,42,-3,34.0,53.01,53.01,55.91,55.91,Japan,145.0,93.0,39
+40,William Lei Ding,33.0,China,Forbes RT 2026-09-07,7.2,3.5,2.0571,67.88,105.7,37,3,33.0,67.88,67.88,105.7,105.7,China,7.2,3.5,40
+41,He Xiangjian,32.0,China,Forbes RT 2026-09-07,7.2,3.5,2.0571,65.83,105.72,38,3,32.0,65.83,65.83,105.72,105.72,China,7.2,3.5,41
+42,Charles de Croes de Liedekerke,31.5,Belgium,Forbes RT 2026-09-07,0.92,0.75,1.2267,38.64,22.67,47,-5,31.5,38.64,38.64,22.67,22.67,Belgium,0.92,0.75,42
+43,Stephen Schwarzman,31.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,31.0,0.0,49,-6,31.0,31.0,31.0,0.0,0.0,United States,1.0,1.0,43
+44,R. Budi Hartono,31.0,Indonesia,Forbes RT 2026-09-07,15450.0,4512.0,3.4242,106.15,242.42,21,23,31.0,106.15,106.15,242.42,242.42,Indonesia,15450.0,4512.0,44
+45,Michael Hartono,30.0,Indonesia,Forbes RT 2026-09-07,15450.0,4512.0,3.4242,102.73,242.43,25,20,30.0,102.73,102.73,242.43,242.43,Indonesia,15450.0,4512.0,45
+46,Len Blavatnik,30.0,United States,Forbes RT 2026-09-07,1.0,1.0,1.0,30.0,0.0,50,-4,30.0,30.0,30.0,0.0,0.0,United States,1.0,1.0,46
+47,Vladimir Potanin,29.1,Russia,Forbes RT 2026-09-07,100.0,27.5,3.6364,105.82,263.64,22,25,29.1,105.82,105.82,263.64,263.64,Russia,100.0,27.5,47
+48,Dietrich Mateschitz (estate),28.5,Austria,Forbes RT 2026-09-07,0.92,0.76,1.2105,34.5,21.05,48,0,28.5,34.5,34.5,21.05,21.05,Austria,0.92,0.76,48
+49,Roman Abramovich,28.5,Russia,Forbes RT 2026-09-07,100.0,27.5,3.6364,103.64,263.65,23,26,28.5,103.64,103.64,263.65,263.65,Russia,100.0,27.5,49
+50,Jack Ma,26.4,China,Forbes RT 2026-09-07,7.2,3.5,2.0571,54.31,105.72,41,9,26.4,54.31,54.31,105.72,105.72,China,7.2,3.5,50
