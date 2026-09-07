@@ -1,11 +1,25 @@
-﻿# Ignore everything in root
-/*
+# Python & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
 
-# Keep these specific files/folders for the RealRich PPP project
-!/wealth_dashboard/
-!/richest_listPPP.ipynb
-!/charts/
-!/data_output/
-!/README.md
-!/BILLIONAIRES_PPP_ANALYSIS_README.md
-!/.gitignore
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Testing & Cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

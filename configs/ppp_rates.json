@@ -1,0 +1,41 @@
+{
+    "analysis_date": "2026-01-22",
+    "data_source": "Forbes Real-Time Billionaires Index",
+    "ppp_source": "World Bank WDI Database, 2024/2025 estimates",
+    "exchange_rates": {
+        "United States": 1.0,
+        "France": 0.92,
+        "Spain": 0.92,
+        "India": 83.42,
+        "Mexico": 17.0,
+        "Germany": 0.92,
+        "Austria": 0.92,
+        "Japan": 145.0,
+        "Italy": 0.92,
+        "Canada": 1.36,
+        "China": 7.2,
+        "Hong Kong": 7.8,
+        "Indonesia": 15450.0,
+        "United Kingdom": 0.79,
+        "Belgium": 0.92,
+        "Russia": 100.0
+    },
+    "ppp_factors": {
+        "United States": 1.0,
+        "France": 0.7,
+        "Spain": 0.57,
+        "India": 20.42,
+        "Mexico": 8.89,
+        "Germany": 0.73,
+        "Austria": 0.76,
+        "Japan": 93.0,
+        "Italy": 0.67,
+        "Canada": 1.24,
+        "China": 3.5,
+        "Hong Kong": 5.5,
+        "Indonesia": 4512.0,
+        "United Kingdom": 0.7,
+        "Belgium": 0.75,
+        "Russia": 27.5
+    }
+}
