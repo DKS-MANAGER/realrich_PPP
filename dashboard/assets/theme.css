@@ -1,36 +1,110 @@
-/* Sidebar: Dark Premium Theme */
-section[data-testid="stSidebar"] {
-    background-color: #1a1c24;
-    color: #e0e0e0;
+/* ==========================================================================
+   RealRich PPP - Dark Premium Theme & Layout Fixes
+   ========================================================================== */
+
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-h1, h2, h3 {
-    font-family: "Inter", sans-serif;
-}
-
-/* KPI Cards: Bordered & Elevated */
-div[data-testid="stMetric"] {
-    background-color: #262730;
-    border: 1px solid #41444e;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
-
-/* KPI Label Color fix for dark card */
-div[data-testid="stMetric"] label {
-    color: #aeb5bc;
-}
-
-/* Tabs: Larger & Distinct */
-div[data-testid="stTabs"] button {
-    font-size: 1.05rem;
-    font-weight: 600;
-}
-
-/* Reduce top padding */
+/* Base Container */
 div.block-container {
-    padding-top: 2rem !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 2.5rem !important;
+    max-width: 95% !important;
 }
 
-/* Fix Search Box styling if possible (remove red border defaults often just requires clean input) */
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #0F172A !important;
+    border-right: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+/* 1. Metric Cards Truncation & Flexible Wrap */
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.75rem !important;
+}
+
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) > div[data-testid="column"] {
+    min-width: 200px !important;
+    flex: 1 1 200px !important;
+}
+
+div[data-testid="stMetric"] {
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85)) !important;
+    border: 1px solid rgba(148, 163, 184, 0.15) !important;
+    padding: 1.1rem 1rem !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(12px) !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    overflow: visible !important;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+div[data-testid="stMetric"]:hover {
+    transform: translateY(-2px);
+    border-color: rgba(56, 189, 248, 0.4) !important;
+}
+
+/* Prevent ellipsis cutting across metric elements */
+[data-testid="stMetricValue"],
+[data-testid="stMetricValue"] > div,
+[data-testid="stMetricLabel"],
+[data-testid="stMetricLabel"] > div,
+[data-testid="stMetricLabel"] label,
+[data-testid="stMetricLabel"] p,
+[data-testid="stMetricDelta"],
+[data-testid="stMetricDelta"] > div {
+    text-overflow: unset !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    word-break: break-word !important;
+}
+
+[data-testid="stMetricLabel"] {
+    font-size: 0.8rem !important;
+    color: #94A3B8 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: clamp(1.1rem, 2vw, 1.4rem) !important;
+    line-height: 1.25 !important;
+    color: #F8FAFC !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em;
+}
+
+[data-testid="stMetricDelta"] {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+}
+
+/* 2. Tab Bar Spillover & Flexible Wrap */
+div[data-baseweb="tab-list"] {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+}
+
+div[data-testid="stTabs"] button,
+div[data-baseweb="tab-list"] button {
+    padding: 6px 10px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: #94A3B8 !important;
+    border-radius: 0.5rem !important;
+}
+
+div[data-testid="stTabs"] button[aria-selected="true"],
+div[data-baseweb="tab-list"] button[aria-selected="true"] {
+    color: #38BDF8 !important;
+    border-bottom: 2px solid #38BDF8 !important;
+}

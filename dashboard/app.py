@@ -34,6 +34,12 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Load custom theme.css asset if present
+css_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "theme.css")
+if os.path.exists(css_file):
+    with open(css_file, "r", encoding="utf-8") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 # Inject modern typography, glassmorphism card styling, and custom theme tokens
 st.markdown("""
 <style>
@@ -82,14 +88,28 @@ st.markdown("""
         margin-bottom: 1.5rem;
     }
     
-    /* Premium KPI Metric Cards */
+    /* 1. Metric Cards Truncation & Flexible Wrap */
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 0.75rem !important;
+    }
+    
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) > div[data-testid="column"] {
+        min-width: 200px !important;
+        flex: 1 1 200px !important;
+    }
+    
     div[data-testid="stMetric"] {
         background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85));
         border: 1px solid rgba(148, 163, 184, 0.15);
-        padding: 1.25rem 1.15rem;
+        padding: 1.1rem 1rem;
         border-radius: 1rem;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
         backdrop-filter: blur(12px);
+        min-width: 0 !important;
+        width: 100% !important;
+        overflow: visible !important;
         transition: transform 0.2s ease, border-color 0.2s ease;
     }
     
@@ -98,31 +118,56 @@ st.markdown("""
         border-color: rgba(56, 189, 248, 0.4);
     }
     
+    /* Prevent ellipsis cutting across metric elements */
+    [data-testid="stMetricValue"],
+    [data-testid="stMetricLabel"],
+    [data-testid="stMetricDelta"] {
+        text-overflow: unset !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        word-break: break-word !important;
+    }
+    
+    [data-testid="stMetricLabel"],
     div[data-testid="stMetric"] label {
         color: #94A3B8 !important;
-        font-size: 0.85rem !important;
+        font-size: 0.8rem !important;
         font-weight: 600 !important;
         text-transform: uppercase;
         letter-spacing: 0.05em;
     }
     
+    [data-testid="stMetricValue"],
     div[data-testid="stMetric"] [data-testid="stMetricValue"] {
         color: #F8FAFC !important;
-        font-size: 1.85rem !important;
+        font-size: clamp(1.1rem, 2vw, 1.4rem) !important;
+        line-height: 1.25 !important;
         font-weight: 800 !important;
         letter-spacing: -0.02em;
     }
     
-    /* Tabs & Controls */
-    div[data-testid="stTabs"] button {
-        font-size: 0.95rem !important;
+    [data-testid="stMetricDelta"] {
+        font-size: 0.75rem !important;
         font-weight: 600 !important;
-        padding: 0.65rem 1.25rem !important;
-        color: #94A3B8 !important;
-        border-radius: 0.5rem 0.5rem 0 0;
     }
     
-    div[data-testid="stTabs"] button[aria-selected="true"] {
+    /* 2. Tab Bar Spillover & Flexible Wrap */
+    div[data-baseweb="tab-list"] {
+        flex-wrap: wrap !important;
+        gap: 4px !important;
+    }
+    
+    div[data-testid="stTabs"] button,
+    div[data-baseweb="tab-list"] button {
+        font-size: 0.85rem !important;
+        font-weight: 600 !important;
+        padding: 6px 10px !important;
+        color: #94A3B8 !important;
+        border-radius: 0.5rem !important;
+    }
+    
+    div[data-testid="stTabs"] button[aria-selected="true"],
+    div[data-baseweb="tab-list"] button[aria-selected="true"] {
         color: #38BDF8 !important;
         border-bottom: 2px solid #38BDF8 !important;
     }
@@ -438,12 +483,12 @@ with tab1:
         ))
         fig_bars.update_layout(
             barmode="group",
-            height=max(450, top_n * 28),
+            height=max(450, len(cohort_plot) * 26),
             yaxis=dict(autorange="reversed", title=None),
             xaxis=dict(title="Wealth Valuation ($ Billions)", gridcolor="rgba(255,255,255,0.08)"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             template=PLOT_TEMPLATE,
-            margin=dict(l=0, r=20, t=10, b=20),
+            margin=dict(l=160, r=20, t=30, b=40),
         )
         st.plotly_chart(fig_bars, use_container_width=True)
 
@@ -499,12 +544,12 @@ with tab2:
             labels={"ppp_uplift_pct": "Purchasing Power Uplift (%)", "name": ""},
             hover_data=["country", "net_worth_usd", "net_worth_ppp"],
             template=PLOT_TEMPLATE,
-            height=480,
+            height=max(450, len(top_uplift) * 26),
         )
         fig_uplift.update_layout(
             yaxis=dict(autorange="reversed"),
             coloraxis_showscale=False,
-            margin=dict(l=0, r=20, t=10, b=20)
+            margin=dict(l=160, r=20, t=30, b=40)
         )
         fig_uplift.update_traces(texttemplate='%{x:.0f}%', textposition='outside')
         st.plotly_chart(fig_uplift, use_container_width=True)
@@ -524,9 +569,9 @@ with tab2:
             labels={"rank_change": "Rank Positions Displaced (ΔR)", "name": ""},
             hover_data=["country", "rank", "rank_ppp"],
             template=PLOT_TEMPLATE,
-            height=480,
+            height=max(450, len(movers_df) * 26),
         )
-        fig_disp.update_layout(coloraxis_showscale=False, margin=dict(l=0, r=20, t=10, b=20))
+        fig_disp.update_layout(coloraxis_showscale=False, margin=dict(l=160, r=20, t=30, b=40))
         fig_disp.update_traces(texttemplate='%{x:+}', textposition='outside')
         st.plotly_chart(fig_disp, use_container_width=True)
 
@@ -708,9 +753,9 @@ with tab5:
             color="country",
             labels={"rank_volatility": "Positions Swung (Volatility)", "name": ""},
             template=PLOT_TEMPLATE,
-            height=380,
+            height=max(450, len(top_volatile) * 26),
         )
-        fig_vol_bar.update_layout(yaxis=dict(autorange="reversed"), margin=dict(l=0, r=20, t=10, b=20))
+        fig_vol_bar.update_layout(yaxis=dict(autorange="reversed"), margin=dict(l=160, r=20, t=30, b=40))
         st.plotly_chart(fig_vol_bar, use_container_width=True)
 
 
