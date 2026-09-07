@@ -53,7 +53,7 @@ def load_data():
         st.error("Data file not found. Please ensure data is available.")
         return None
 
-    # Normalize column names
+    # Safely normalize column names without creating duplicate columns
     col_map = {
         "net_worth_PPP_intl$": "net_worth_ppp",
         "net_worth_USD": "net_worth_usd",
@@ -64,19 +64,29 @@ def load_data():
         "PPP_conversion_factor": "ppp_factor",
         "exchange_rate_local_per_USD": "fx_rate",
     }
-    df = df.rename(columns={k: v for k, v in col_map.items() if k in df.columns})
+    for old_col, new_col in col_map.items():
+        if old_col in df.columns and new_col not in df.columns:
+            df = df.rename(columns={old_col: new_col})
+
+    # Ensure strictly unique columns
+    df = df.loc[:, ~df.columns.duplicated()].copy()
 
     # Derived columns
+    if "rank" not in df.columns and "rank_nominal" in df.columns:
+        df["rank"] = df["rank_nominal"].astype(int)
+    elif "rank" in df.columns:
+        df["rank"] = df["rank"].astype(int)
+
     if "ppp_uplift_pct" not in df.columns and "net_worth_ppp" in df.columns:
         df["ppp_uplift_pct"] = (
             (df["net_worth_ppp"] - df["net_worth_usd"]) / df["net_worth_usd"] * 100
         ).round(1)
-    if "rank" in df.columns:
-        df["rank"] = df["rank"].astype(int)
 
-    # Compute PPP-adjusted rank
-    if "net_worth_ppp" in df.columns:
+    # Compute PPP-adjusted rank if not already computed
+    if "net_worth_ppp" in df.columns and "rank_ppp" not in df.columns:
         df["rank_ppp"] = df["net_worth_ppp"].rank(ascending=False, method="min").astype(int)
+
+    if "rank_change" not in df.columns and "rank" in df.columns and "rank_ppp" in df.columns:
         df["rank_change"] = df["rank"] - df["rank_ppp"]
 
     return df
