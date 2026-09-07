@@ -13,8 +13,10 @@ import numpy as np
 # Ensure src is importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from analytics import compute_ppp_wealth
-from sensitivity import sensitivity_analysis, summarize_sensitivity
+from analytics import compute_ppp_wealth, compute_decomposed_ppp_wealth
+from sensitivity import sensitivity_analysis, summarize_sensitivity, monte_carlo_fx_simulation
+from models.clustering import segment_billionaires, segment_billionaires_gmm
+from data_loaders import get_ppp_factors_with_fallback
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
@@ -113,3 +115,79 @@ class TestSummarizeSensitivity:
         result = sensitivity_analysis(sample_df, fx_shift_pct=0.10)
         summary = summarize_sensitivity(result)
         assert isinstance(summary["country_impact"], pd.DataFrame)
+
+
+# ── Advanced Quantitative Upgrade Tests ───────────────────────────────────────
+
+class TestDecomposedPPP:
+    """Tests for multi-tier asset-decomposed PPP model."""
+
+    def test_decomposed_bounds(self, sample_df):
+        """Decomposed wealth should be bounded between nominal and pure consumer PPP."""
+        result = compute_decomposed_ppp_wealth(sample_df)
+        india_row = result[result["country"] == "India"].iloc[0]
+        # In India, consumer PPP is ~204B (4.08x), nominal is 50B
+        # Decomposed GFCF with domestic share should be between 50B and 204B
+        assert india_row["net_worth_decomposed_ppp"] > india_row["net_worth_usd"]
+        assert india_row["net_worth_decomposed_ppp"] < india_row["net_worth_ppp"]
+
+    def test_us_anchor_decomposed(self, sample_df):
+        """US decomposed PPP should remain near parity ($100B)."""
+        result = compute_decomposed_ppp_wealth(sample_df)
+        us_row = result[result["country"] == "United States"].iloc[0]
+        assert us_row["net_worth_decomposed_ppp"] == pytest.approx(100.0, abs=0.5)
+
+    def test_no_nan_decomposed(self, sample_df):
+        result = compute_decomposed_ppp_wealth(sample_df)
+        assert result["net_worth_decomposed_ppp"].isna().sum() == 0
+        assert result["decomposed_multiplier"].isna().sum() == 0
+
+
+class TestGMMClustering:
+    """Tests for Gaussian Mixture Model archetype clustering."""
+
+    def test_gmm_probabilities_sum_to_one(self, sample_df):
+        """Posterior membership probabilities must sum to 1.0 for every individual."""
+        # Create a dataframe with enough rows for 3 components
+        expanded_df = pd.concat([sample_df] * 4, ignore_index=True)
+        expanded_df["name"] = [f"Person_{i}" for i in range(len(expanded_df))]
+        result = segment_billionaires_gmm(expanded_df, n_components=3)
+        
+        prob_cols = [c for c in result.columns if c.startswith("gmm_prob_c")]
+        assert len(prob_cols) == 3
+        row_sums = result[prob_cols].sum(axis=1)
+        assert np.allclose(row_sums.to_numpy(), 1.0, atol=1e-3)
+
+    def test_gmm_entropy_range(self, sample_df):
+        """Normalized ambiguity entropy must lie in [0, 1]."""
+        expanded_df = pd.concat([sample_df] * 4, ignore_index=True)
+        result = segment_billionaires_gmm(expanded_df, n_components=3)
+        assert (result["gmm_ambiguity"] >= 0.0).all()
+        assert (result["gmm_ambiguity"] <= 1.0).all()
+
+
+class TestMonteCarloSimulation:
+    """Tests for stochastic Monte Carlo FX volatility simulation."""
+
+    def test_sim_percentiles_ordered(self, sample_df):
+        """5th percentile (best rank) must be <= 95th percentile (worst rank)."""
+        result = monte_carlo_fx_simulation(sample_df, n_simulations=200, random_state=42)
+        assert (result["sim_rank_p05"] <= result["sim_rank_p95"]).all()
+
+    def test_var_and_cvar_positive(self, sample_df):
+        """Value-at-Risk and Expected Shortfall should be non-negative and cvar >= var."""
+        result = monte_carlo_fx_simulation(sample_df, n_simulations=200, random_state=42)
+        assert (result["rank_var_95"] >= 0).all()
+        assert (result["rank_cvar_95"] >= result["rank_var_95"] - 0.1).all()
+
+
+class TestDataLoaders:
+    """Tests for World Bank data loader and fallback cache."""
+
+    def test_fallback_resolves_countries(self):
+        factors = get_ppp_factors_with_fallback(use_live_api=False)
+        assert isinstance(factors, dict)
+        assert "India" in factors
+        assert "United States" in factors
+        assert factors["India"] > 0
+

@@ -19,9 +19,22 @@ if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
 try:
-    from src.models.clustering import segment_billionaires
+    from src.analytics import compute_decomposed_ppp_wealth
+    from src.models.clustering import segment_billionaires, segment_billionaires_gmm
+    from src.sensitivity import monte_carlo_fx_simulation
+    from src.data_loaders import get_ppp_factors_with_fallback
 except ImportError:
-    segment_billionaires = None
+    try:
+        from analytics import compute_decomposed_ppp_wealth
+        from models.clustering import segment_billionaires, segment_billionaires_gmm
+        from sensitivity import monte_carlo_fx_simulation
+        from data_loaders import get_ppp_factors_with_fallback
+    except ImportError:
+        compute_decomposed_ppp_wealth = None
+        segment_billionaires = None
+        segment_billionaires_gmm = None
+        monte_carlo_fx_simulation = None
+        get_ppp_factors_with_fallback = None
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -272,6 +285,13 @@ def load_data():
     # Assign ISO-3 codes for high-precision choropleth maps
     df["iso_alpha"] = df["country"].map(ISO3_MAP).fillna("USA")
 
+    # Compute multi-tier institutional decomposed PPP metrics if engine available
+    if compute_decomposed_ppp_wealth is not None:
+        try:
+            df = compute_decomposed_ppp_wealth(df)
+        except Exception:
+            pass
+
     return df
 
 
@@ -313,15 +333,32 @@ with st.sidebar:
 
     st.subheader("⚙️ Filter & Parameters")
     
+    # Methodology Framework Selector
+    valuation_model = st.radio(
+        "PPP Valuation Framework:",
+        [
+            "Institutional Decomposed (GFCF + Global Revenue Split)",
+            "Standard Consumer Parity (World Bank ICP)",
+        ],
+        index=0,
+        help="Institutional Decomposed addresses capital goods tradability (GFCF) and multinational revenue splits. Standard Consumer Parity uses pure consumer basket factors."
+    )
+    is_decomposed = "Institutional Decomposed" in valuation_model and "net_worth_decomposed_ppp" in df.columns
+    active_ppp_col = "net_worth_decomposed_ppp" if is_decomposed else "net_worth_ppp"
+    active_uplift_col = "decomposed_uplift_pct" if is_decomposed else "ppp_uplift_pct"
+    active_rank_ppp_col = "rank_decomposed_ppp" if is_decomposed else "rank_ppp"
+    active_rank_change_col = "rank_change_decomposed" if is_decomposed else "rank_change"
+    active_label_suffix = "Decomposed Int$" if is_decomposed else "Int$"
+
     # Cohort Size Slider
     top_n = st.slider("Cohort Size (Top N)", min_value=5, max_value=len(df), value=20, step=5)
     
     # Sort Selector
     sort_options = {
         "net_worth_usd": "Nominal Net Worth ($ USD)",
-        "net_worth_ppp": "Real PPP Net Worth (Int$)",
-        "ppp_uplift_pct": "Purchasing Power Uplift (%)",
-        "rank_change": "Rank Position Shift (ΔR)",
+        active_ppp_col: f"Real PPP Net Worth ({active_label_suffix})",
+        active_uplift_col: "Purchasing Power Uplift (%)",
+        active_rank_change_col: "Rank Position Shift (ΔR)",
     }
     sort_by = st.selectbox(
         "Sort Cohort By:",
@@ -371,11 +408,11 @@ if filtered_df.empty:
 # ──────────────────────────────────────────────────────────────────────────────
 # 4. HERO SECTION & EXECUTIVE METRICS RIBBON
 # ──────────────────────────────────────────────────────────────────────────────
-st.markdown('<div class="hero-badge">Macroeconomic Analytics & ML Wealth Engine</div>', unsafe_allow_html=True)
-st.markdown('<div class="hero-title">Global Billionaire Wealth: Nominal vs. Purchasing Power Parity</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-badge">Macroeconomic Analytics & ML Wealth Engine</div>', unsafe_html=True)
+st.markdown('<div class="hero-title">Global Billionaire Wealth: Nominal vs. Purchasing Power Parity</div>', unsafe_html=True)
 st.markdown(
     '<div class="hero-subtitle">Evaluating sovereign purchasing power, domestic resource command, and currency friction for the world’s wealthiest individuals.</div>',
-    unsafe_allow_html=True
+    unsafe_html=True
 )
 
 with st.expander("ℹ️ Theoretical Framework & Mathematical Formulation", expanded=False):
@@ -391,11 +428,11 @@ with st.expander("ℹ️ Theoretical Framework & Mathematical Formulation", expa
 
 # KPI Metric Cards
 total_nom = filtered_df["net_worth_usd"].sum()
-total_ppp = filtered_df["net_worth_ppp"].sum()
+total_ppp = filtered_df[active_ppp_col].sum()
 net_expansion = total_ppp - total_nom
 expansion_pct = (net_expansion / total_nom) * 100 if total_nom > 0 else 0
 
-top_mover = filtered_df.nlargest(1, "rank_change").iloc[0] if "rank_change" in filtered_df.columns else None
+top_mover = filtered_df.nlargest(1, active_rank_change_col).iloc[0] if active_rank_change_col in filtered_df.columns else None
 
 kpi1, kpi2, kpi3, kpi4 = st.columns(4)
 kpi1.metric(
@@ -404,40 +441,40 @@ kpi1.metric(
     help="Combined market exchange net worth in USD."
 )
 kpi2.metric(
-    label="Total Real PPP Wealth",
-    value=f"${total_ppp:,.1f}B Int$",
+    label=f"Total Real PPP Wealth ({active_label_suffix})",
+    value=f"${total_ppp:,.1f}B",
     delta=f"+${net_expansion:,.1f}B Real Gain",
-    help="Adjusted for sovereign price levels using World Bank ICP factors."
+    help=f"Adjusted via {valuation_model}."
 )
 kpi3.metric(
     label="Cohort Net Expansion",
     value=f"+{expansion_pct:.1f}%",
-    delta=f"{filtered_df['ppp_uplift_pct'].median():.1f}% Median Uplift",
+    delta=f"{filtered_df[active_uplift_col].median():.1f}% Median Uplift",
     help="Aggregate percentage gain in real purchasing power across cohort."
 )
 if top_mover is not None:
     kpi4.metric(
         label="Top Rank Gainer",
-        value=top_mover["name"],
-        delta=f"↑ +{int(top_mover['rank_change'])} Spots ({top_mover['country']})",
-        help="Individual with largest upward displacement in global ranking."
+        value=f"{top_mover['name']}",
+        delta=f"+{int(top_mover[active_rank_change_col])} Positions (to #{int(top_mover[active_rank_ppp_col])})",
+        help=f"Highest upward rank displacement under {valuation_model}."
     )
 else:
-    kpi4.metric(label="Active Cohort", value=f"{len(filtered_df)} Billionaires")
+    kpi4.metric(label="Top Rank Gainer", value="N/A", delta="0")
 
-st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_html=True)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# 5. CORE ANALYTICAL TABS
+# 5. CORE BI APPLICATION TABS
 # ──────────────────────────────────────────────────────────────────────────────
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "📊 Market Overview",
     "📈 Analytical Deep Dive",
-    "🌍 Global Impact & Map",
-    "🤖 ML Wealth Archetypes",
-    "🔬 Macro FX Shocks",
-    "📋 Data Explorer"
+    "🌐 Geographic Dispersion",
+    "🤖 ML Archetypes",
+    "🔬 Macro Volatility & Risk",
+    "📋 Analytical Ledger",
 ])
 
 COLOR_NOMINAL = "#38BDF8"   # Electric Sky Blue
@@ -452,14 +489,14 @@ with tab1:
     with col_lead:
         st.subheader("Cohort Parameters")
         st.markdown(f"Displaying top **{min(top_n, len(filtered_df))}** billionaires sorted by **{sort_options[sort_by]}**.")
-        st.info("💡 **Insight:** Notice the pronounced rightward divergence for Indian and Chinese billionaires while US titans remain on parity line.")
+        st.info(f"💡 **Active Model:** {valuation_model}.")
         
         # Quick distribution metrics
         top_cohort = filtered_df.nlargest(top_n, sort_by)
         avg_top_nom = top_cohort["net_worth_usd"].mean()
-        avg_top_ppp = top_cohort["net_worth_ppp"].mean()
+        avg_top_ppp = top_cohort[active_ppp_col].mean()
         st.metric("Avg Cohort Nominal", f"${avg_top_nom:.1f}B")
-        st.metric("Avg Cohort PPP", f"${avg_top_ppp:.1f}B Int$")
+        st.metric(f"Avg Cohort PPP ({active_label_suffix})", f"${avg_top_ppp:.1f}B")
 
     with col_chart:
         cohort_plot = filtered_df.nlargest(top_n, sort_by).copy()
@@ -475,11 +512,11 @@ with tab1:
         ))
         fig_bars.add_trace(go.Bar(
             y=cohort_plot["name"],
-            x=cohort_plot["net_worth_ppp"],
-            name="Real PPP Wealth (Int$ B)",
+            x=cohort_plot[active_ppp_col],
+            name=f"Real PPP Wealth ({active_label_suffix} B)",
             orientation="h",
             marker=dict(color=COLOR_PPP, line=dict(color="rgba(255,255,255,0.2)", width=1)),
-            hovertemplate="<b>%{y}</b><br>Real PPP Wealth: $%{x:,.1f}B Int$<extra></extra>"
+            hovertemplate=f"<b>%{{y}}</b><br>Real PPP Wealth: $%{{x:,.1f}}B {active_label_suffix}<extra></extra>"
         ))
         fig_bars.update_layout(
             barmode="group",
@@ -499,21 +536,21 @@ with tab1:
     fig_scatter = px.scatter(
         filtered_df,
         x="net_worth_usd",
-        y="net_worth_ppp",
+        y=active_ppp_col,
         color="country",
         size="net_worth_usd",
         hover_name="name",
-        hover_data=["rank", "rank_ppp", "rank_change", "ppp_uplift_pct"],
+        hover_data=["rank", active_rank_ppp_col, active_rank_change_col, active_uplift_col],
         labels={
             "net_worth_usd": "Nominal Net Worth ($B USD)",
-            "net_worth_ppp": "Real PPP Net Worth ($B Int$)",
+            active_ppp_col: f"Real PPP Net Worth ($B {active_label_suffix})",
             "country": "Sovereign State",
-            "ppp_uplift_pct": "PPP Uplift (%)"
+            active_uplift_col: "PPP Uplift (%)"
         },
         template=PLOT_TEMPLATE,
         height=550,
     )
-    max_axis = max(filtered_df["net_worth_usd"].max(), filtered_df["net_worth_ppp"].max()) * 1.08
+    max_axis = max(filtered_df["net_worth_usd"].max(), filtered_df[active_ppp_col].max()) * 1.08
     fig_scatter.add_trace(go.Scatter(
         x=[0, max_axis],
         y=[0, max_axis],
@@ -531,18 +568,18 @@ with tab2:
     
     with col_d1:
         st.subheader("Top Purchasing Power Gains (%)")
-        st.caption("Percentage boost in domestic capital power resulting from lower cost-of-living indices.")
+        st.caption(f"Percentage boost in real domestic capital power under {valuation_model}.")
         
-        top_uplift = filtered_df.nlargest(15, "ppp_uplift_pct")
+        top_uplift = filtered_df.nlargest(15, active_uplift_col)
         fig_uplift = px.bar(
             top_uplift,
-            x="ppp_uplift_pct",
+            x=active_uplift_col,
             y="name",
             orientation="h",
-            color="ppp_uplift_pct",
+            color=active_uplift_col,
             color_continuous_scale="Tealrose",
-            labels={"ppp_uplift_pct": "Purchasing Power Uplift (%)", "name": ""},
-            hover_data=["country", "net_worth_usd", "net_worth_ppp"],
+            labels={active_uplift_col: "Purchasing Power Uplift (%)", "name": ""},
+            hover_data=["country", "net_worth_usd", active_ppp_col],
             template=PLOT_TEMPLATE,
             height=max(450, len(top_uplift) * 26),
         )
@@ -556,18 +593,18 @@ with tab2:
 
     with col_d2:
         st.subheader("Global Rank Displacement Ladder")
-        st.caption("Positions gained (green) or compressed (muted) when evaluating through PPP.")
+        st.caption(f"Positions gained (green) or compressed (muted) when evaluating through {valuation_model}.")
         
-        movers_df = filtered_df.loc[filtered_df["rank_change"].abs().sort_values(ascending=False).index[:15]]
+        movers_df = filtered_df.loc[filtered_df[active_rank_change_col].abs().sort_values(ascending=False).index[:15]]
         fig_disp = px.bar(
-            movers_df.sort_values("rank_change", ascending=True),
-            x="rank_change",
+            movers_df.sort_values(active_rank_change_col, ascending=True),
+            x=active_rank_change_col,
             y="name",
             orientation="h",
-            color="rank_change",
+            color=active_rank_change_col,
             color_continuous_scale="Blues",
-            labels={"rank_change": "Rank Positions Displaced (ΔR)", "name": ""},
-            hover_data=["country", "rank", "rank_ppp"],
+            labels={active_rank_change_col: "Rank Positions Displaced (ΔR)", "name": ""},
+            hover_data=["country", "rank", active_rank_ppp_col],
             template=PLOT_TEMPLATE,
             height=max(450, len(movers_df) * 26),
         )
@@ -654,50 +691,85 @@ with tab3:
 # ── TAB 4: ML WEALTH ARCHETYPES ──────────────────────────────────────────────
 with tab4:
     st.subheader("🤖 Unsupervised Machine Learning: UHNWI Wealth Archetypes")
-    st.markdown("K-Means clustering algorithm ($k=3$) with feature normalization categorizes billionaires by economic structure.")
+    st.markdown("Segment billionaires into macroeconomic wealth structures via unsupervised clustering.")
+
+    ml_algorithm = st.radio(
+        "Clustering Algorithm:",
+        [
+            "Bayesian Gaussian Mixture Models (Soft Probabilistic Archetypes)",
+            "Standard K-Means (Hard Clusters)",
+        ],
+        horizontal=True,
+        help="Gaussian Mixture Models calculate posterior probabilities and entropy uncertainty for boundary individuals. K-Means assigns hard discrete clusters."
+    )
+
+    use_gmm = "Gaussian Mixture" in ml_algorithm and segment_billionaires_gmm is not None
 
     if segment_billionaires is not None:
         try:
-            clustered_df = segment_billionaires(filtered_df)
+            if use_gmm:
+                clustered_df = segment_billionaires_gmm(filtered_df)
+                label_col = "gmm_label"
+                bic_val = clustered_df.attrs.get("gmm_bic", "N/A")
+                st.info(f"📊 **Bayesian Model Fit:** BIC = `{bic_val}` | Average Assignment Confidence = `{clustered_df['gmm_max_prob'].mean() * 100:.1f}%`")
+            else:
+                clustered_df = segment_billionaires(filtered_df)
+                label_col = "archetype_label"
             
             # Archetype metrics overview
-            c_metrics = clustered_df.groupby("archetype_label").agg(
+            c_metrics = clustered_df.groupby(label_col).agg(
                 count=("name", "count"),
                 avg_nominal=("net_worth_usd", "mean"),
-                avg_ppp=("net_worth_ppp", "mean"),
-                avg_uplift=("ppp_uplift_pct", "mean"),
+                avg_ppp=(active_ppp_col, "mean"),
+                avg_uplift=(active_uplift_col, "mean"),
             ).reset_index()
 
             col_m1, col_m2, col_m3 = st.columns(3)
             for idx, row in c_metrics.iterrows():
                 target_col = [col_m1, col_m2, col_m3][idx % 3]
                 target_col.metric(
-                    label=row["archetype_label"],
+                    label=row[label_col],
                     value=f"{row['count']} Individuals",
-                    delta=f"${row['avg_nominal']:.1f}B Nom → ${row['avg_ppp']:.1f}B PPP"
+                    delta=f"${row['avg_nominal']:.1f}B Nom → ${row['avg_ppp']:.1f}B {active_label_suffix}"
                 )
 
             st.markdown("<br>", unsafe_allow_html=True)
 
+            hover_cols = ["country", "net_worth_usd", active_ppp_col, active_uplift_col]
+            if use_gmm and "gmm_max_prob" in clustered_df.columns:
+                hover_cols.extend(["gmm_max_prob", "gmm_ambiguity"])
+
             fig_ml = px.scatter(
                 clustered_df,
                 x="net_worth_usd",
-                y="net_worth_ppp",
-                color="archetype_label",
-                size="ppp_uplift_pct",
+                y=active_ppp_col,
+                color=label_col,
+                size="net_worth_usd",
                 hover_name="name",
-                hover_data=["country", "net_worth_usd", "net_worth_ppp", "ppp_uplift_pct"],
+                hover_data=hover_cols,
                 labels={
                     "net_worth_usd": "Nominal Net Worth ($B USD)",
-                    "net_worth_ppp": "Real PPP Net Worth ($B Int$)",
-                    "archetype_label": "Identified Archetype",
-                    "ppp_uplift_pct": "PPP Uplift (%)"
+                    active_ppp_col: f"Real PPP Net Worth ($B {active_label_suffix})",
+                    label_col: "Identified Archetype",
+                    active_uplift_col: "PPP Uplift (%)",
+                    "gmm_max_prob": "Classification Certainty",
+                    "gmm_ambiguity": "Entropy Ambiguity"
                 },
                 color_discrete_sequence=["#38BDF8", "#F59E0B", "#10B981"],
                 template=PLOT_TEMPLATE,
                 height=520,
             )
             st.plotly_chart(fig_ml, use_container_width=True)
+
+            if use_gmm and "gmm_ambiguity" in clustered_df.columns:
+                st.markdown("---")
+                st.subheader("🌫️ Boundary Uncertainty & Hybrid Archetype Titans")
+                st.caption("Individuals with elevated Shannon entropy straddle the boundary between emerging market leverage and global liquidity.")
+                
+                ambiguous = clustered_df.nlargest(5, "gmm_ambiguity")[
+                    ["name", "country", "net_worth_usd", active_ppp_col, "gmm_label", "gmm_max_prob", "gmm_ambiguity"]
+                ]
+                st.dataframe(ambiguous, use_container_width=True)
 
         except Exception as e:
             st.warning(f"Could not compute clustering on current subset: {e}")
@@ -758,6 +830,49 @@ with tab5:
         fig_vol_bar.update_layout(yaxis=dict(autorange="reversed"), margin=dict(l=160, r=20, t=30, b=40))
         st.plotly_chart(fig_vol_bar, use_container_width=True)
 
+    st.markdown("---")
+    st.subheader("🎲 Stochastic Monte Carlo FX Risk Engine (500 Correlated Paths)")
+    st.caption("Simulates joint sovereign foreign exchange shocks to calculate Value-at-Risk (95% VaR) and Expected Shortfall of rank displacements.")
+    
+    if monte_carlo_fx_simulation is not None and len(filtered_df) >= 3:
+        mc_results = monte_carlo_fx_simulation(filtered_df, n_simulations=500, random_state=42)
+        
+        mc_col1, mc_col2, mc_col3 = st.columns(3)
+        mc_col1.metric("Average Rank Volatility", f"±{mc_results['sim_rank_std'].mean():.1f} Spots")
+        mc_col2.metric("Maximum 95% VaR Rank Drop", f"{int(mc_results['rank_var_95'].max())} Spots")
+        mc_col3.metric("Worst-Tail Expected Shortfall (CVaR)", f"{mc_results['rank_cvar_95'].max():.1f} Spots")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        top_risk = mc_results.nlargest(12, "rank_var_95").sort_values("rank_var_95", ascending=True)
+        
+        fig_mc = go.Figure()
+        fig_mc.add_trace(go.Bar(
+            y=top_risk["name"],
+            x=top_risk["sim_rank_p95"] - top_risk["sim_rank_p05"],
+            base=top_risk["sim_rank_p05"],
+            orientation="h",
+            name="90% Empirical Rank Range [P05, P95]",
+            marker=dict(color="rgba(56, 189, 248, 0.35)", line=dict(color="#38BDF8", width=1.5)),
+            hovertemplate="<b>%{y}</b><br>Empirical Range: #%{base} to #%{x}<extra></extra>"
+        ))
+        fig_mc.add_trace(go.Scatter(
+            y=top_risk["name"],
+            x=top_risk["base_ppp_rank"],
+            mode="markers",
+            name="Baseline Real Rank",
+            marker=dict(color="#F43F5E", size=10, symbol="diamond"),
+            hovertemplate="<b>%{y}</b><br>Baseline Rank: #%{x}<extra></extra>"
+        ))
+        fig_mc.update_layout(
+            title="Stochastic Rank Dispersion & Vulnerability (Top VaR Exposures)",
+            xaxis=dict(title="Simulated Global Rank Position (Lower = Richer)", autorange="reversed"),
+            template=PLOT_TEMPLATE,
+            height=max(450, len(top_risk) * 32),
+            margin=dict(l=160, r=20, t=40, b=40),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        )
+        st.plotly_chart(fig_mc, use_container_width=True)
+
 
 # ── TAB 6: MASTER DATA EXPLORER ──────────────────────────────────────────────
 with tab6:
@@ -772,7 +887,9 @@ with tab6:
             table_view["country"].str.contains(search_query, case=False, na=False)
         ]
 
-    cols_to_show = ["rank", "name", "country", "net_worth_usd", "net_worth_ppp", "ppp_uplift_pct", "rank_ppp", "rank_change"]
+    cols_to_show = ["rank", "name", "country", "net_worth_usd", active_ppp_col, active_uplift_col, active_rank_ppp_col, active_rank_change_col]
+    if "domestic_share" in table_view.columns:
+        cols_to_show.append("domestic_share")
     cols_to_show = [c for c in cols_to_show if c in table_view.columns]
 
     st.dataframe(
@@ -782,10 +899,11 @@ with tab6:
             "name": st.column_config.TextColumn("Billionaire Entity", width="medium"),
             "country": st.column_config.TextColumn("Country"),
             "net_worth_usd": st.column_config.NumberColumn("Nominal ($B)", format="$%.1fB"),
-            "net_worth_ppp": st.column_config.NumberColumn("Real PPP (Int$)", format="$%.1fB"),
-            "ppp_uplift_pct": st.column_config.ProgressColumn("PPP Uplift (%)", min_value=0, max_value=350, format="+%.1f%%"),
-            "rank_ppp": st.column_config.NumberColumn("PPP Rank", format="#%d"),
-            "rank_change": st.column_config.NumberColumn("Position Delta (ΔR)", format="%+d"),
+            active_ppp_col: st.column_config.NumberColumn(f"Real PPP ({active_label_suffix})", format="$%.1fB"),
+            active_uplift_col: st.column_config.ProgressColumn("PPP Uplift (%)", min_value=0, max_value=350, format="+%.1f%%"),
+            active_rank_ppp_col: st.column_config.NumberColumn("PPP Rank", format="#%d"),
+            active_rank_change_col: st.column_config.NumberColumn("Position Delta (ΔR)", format="%+d"),
+            "domestic_share": st.column_config.NumberColumn("Domestic Share", format="%.0%%"),
         },
         use_container_width=True,
         hide_index=True,

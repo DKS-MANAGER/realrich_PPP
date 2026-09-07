@@ -26,7 +26,12 @@ def load_ppp_rates(config_path: Optional[str] = None) -> dict:
     if config_path and os.path.exists(config_path):
         with open(config_path, "r", encoding="utf-8") as f:
             return json.load(f)
-    return {"exchange_rates": {}, "ppp_factors": {}}
+    return {
+        "exchange_rates": {},
+        "ppp_factors": {},
+        "gfcf_ppp_factors": {},
+        "default_domestic_share": {}
+    }
 
 
 def compute_ppp_wealth(
@@ -119,3 +124,74 @@ def compute_ppp_wealth(
     result["rank"] = result["rank_nominal"]
 
     return result
+
+
+def compute_decomposed_ppp_wealth(
+    df: pd.DataFrame,
+    net_worth_col: str = "net_worth_usd",
+    country_col: str = "country",
+    alpha_tradability: float = 0.85,
+) -> pd.DataFrame:
+    """
+    Compute Multi-Tier Asset-Decomposed PPP Wealth.
+    
+    Formula:
+        Effective Multiplier:
+            mu_eff = omega_dom * ((FX / P_GFCF) ** alpha) + (1 - omega_dom) * 1.0
+        Where:
+            omega_dom: Share of assets/revenue in domestic market (0.0 to 1.0)
+            P_GFCF: World Bank Gross Fixed Capital Formation PPP conversion factor
+            alpha: Tradability drag elasticity (default 0.85)
+            (1 - omega_dom): Liquid / multinational portfolio valued at USD parity
+            
+    Returns
+    -------
+    pd.DataFrame
+        Enriched DataFrame with decomposed PPP valuation, effective multipliers,
+        decomposed uplifts, and displaced rankings.
+    """
+    # Start with standardized baseline
+    base = compute_ppp_wealth(df, net_worth_col=net_worth_col, country_col=country_col)
+    result = base.copy()
+    
+    rates = load_ppp_rates()
+    gfcf_map = rates.get("gfcf_ppp_factors", {})
+    dom_map = rates.get("default_domestic_share", {})
+    
+    active_country = country_col if country_col in result.columns else "country"
+    
+    # Map GFCF factors (falling back to standard ppp_factor if GFCF unavailable)
+    if "gfcf_factor" not in result.columns:
+        result["gfcf_factor"] = result[active_country].map(gfcf_map)
+        result["gfcf_factor"] = result["gfcf_factor"].fillna(result["ppp_factor"]).fillna(1.0)
+        
+    # Map domestic revenue/asset shares (falling back to 0.65 default)
+    if "domestic_share" not in result.columns:
+        result["domestic_share"] = result[active_country].map(dom_map).fillna(0.65)
+        
+    usd_val = result["net_worth_usd"]
+    fx = result["fx_rate"]
+    gfcf = result["gfcf_factor"]
+    omega = result["domestic_share"]
+    
+    # Capital goods purchasing power factor with import drag elasticity
+    cap_multiplier = (fx / gfcf).clip(lower=0.01) ** alpha_tradability
+    
+    # Blended institutional effective multiplier
+    result["decomposed_multiplier"] = (
+        omega * cap_multiplier + (1.0 - omega) * 1.0
+    ).round(4)
+    
+    result["net_worth_decomposed_ppp"] = (usd_val * result["decomposed_multiplier"]).round(2)
+    
+    result["decomposed_uplift_pct"] = (
+        ((result["net_worth_decomposed_ppp"] - usd_val) / usd_val) * 100.0
+    ).round(2)
+    
+    result["rank_decomposed_ppp"] = (
+        result["net_worth_decomposed_ppp"].rank(ascending=False, method="min").astype(int)
+    )
+    result["rank_change_decomposed"] = result["rank_nominal"] - result["rank_decomposed_ppp"]
+    
+    return result
+

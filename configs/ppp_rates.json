@@ -37,5 +37,41 @@
         "United Kingdom": 0.7,
         "Belgium": 0.75,
         "Russia": 27.5
+    },
+    "gfcf_ppp_factors": {
+        "United States": 1.0,
+        "France": 0.82,
+        "Spain": 0.72,
+        "India": 38.5,
+        "Mexico": 12.5,
+        "Germany": 0.85,
+        "Austria": 0.86,
+        "Japan": 110.0,
+        "Italy": 0.78,
+        "Canada": 1.30,
+        "China": 4.8,
+        "Hong Kong": 6.8,
+        "Indonesia": 8200.0,
+        "United Kingdom": 0.76,
+        "Belgium": 0.84,
+        "Russia": 45.0
+    },
+    "default_domestic_share": {
+        "United States": 0.55,
+        "France": 0.25,
+        "Spain": 0.35,
+        "India": 0.78,
+        "Mexico": 0.60,
+        "Germany": 0.40,
+        "Austria": 0.45,
+        "Japan": 0.50,
+        "Italy": 0.30,
+        "Canada": 0.55,
+        "China": 0.72,
+        "Hong Kong": 0.45,
+        "Indonesia": 0.82,
+        "United Kingdom": 0.35,
+        "Belgium": 0.30,
+        "Russia": 0.65
     }
 }
