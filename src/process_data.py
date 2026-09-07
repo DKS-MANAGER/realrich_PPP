@@ -1,50 +1,53 @@
 """
-Data processing script: Sorts raw Forbes top 50 CSV, computes PPP metrics, 
-and exports to processed and output directories.
+Data Processing Pipeline:
+Sorts raw Forbes billionaire ledger, applies sovereign PPP factors,
+and generates standardized datasets across data/processed/, data/output/, and dashboard/data/.
 """
 
-import pandas as pd
 import os
-import json
+import pandas as pd
 from analytics import compute_ppp_wealth, load_ppp_rates
 
 
 def process_pipeline():
     raw_path = "data/raw/forbes_top50.csv"
     if not os.path.exists(raw_path):
-        print(f"Raw file {raw_path} not found.")
+        print(f"Raw file '{raw_path}' not found.")
         return
 
     df = pd.read_csv(raw_path)
-    
-    # 1. Sort by net_worth_usd_billion descending and reassign rank
-    df = df.sort_values(by="net_worth_usd_billion", ascending=False).reset_index(drop=True)
-    df["rank"] = range(1, len(df) + 1)
-    
-    # Save sorted raw file back
-    df.to_csv(raw_path, index=False)
-    print(f"Sorted {raw_path} successfully.")
 
-    # 2. Load config rates and compute PPP wealth
-    rates = load_ppp_rates()
-    fx_map = rates.get("exchange_rates", {})
-    ppp_map = rates.get("ppp_factors", {})
-    
-    df["exchange_rate_local_per_USD"] = df["primary_country"].map(fx_map).fillna(1.0)
-    df["ppp_conversion_factor"] = df["primary_country"].map(ppp_map).fillna(1.0)
-    
+    # Standardize incoming column names
+    col_map = {
+        "rank": "rank_nominal",
+        "net_worth_usd_billion": "net_worth_usd",
+        "primary_country": "country",
+    }
+    df = df.rename(columns={k: v for k, v in col_map.items() if k in df.columns})
+
+    # Sort strictly descending by net_worth_usd
+    usd_col = "net_worth_usd" if "net_worth_usd" in df.columns else "net_worth_usd_billion"
+    df = df.sort_values(by=usd_col, ascending=False).reset_index(drop=True)
+    df["rank_nominal"] = range(1, len(df) + 1)
+
+    # Re-save cleaned raw dataset
+    df.to_csv(raw_path, index=False)
+    print(f"[OK] Sorted and validated {raw_path}")
+
+    # Compute PPP wealth
     processed_df = compute_ppp_wealth(df)
-    
-    # Ensure processed directory exists
-    os.makedirs("data/processed", exist_ok=True)
-    os.makedirs("data_output", exist_ok=True)
-    
-    processed_csv_path = "data/processed/top50_nominal_and_ppp.csv"
-    output_csv_path = "data_output/top50_nominal_and_ppp.csv"
-    
-    processed_df.to_csv(processed_csv_path, index=False)
-    processed_df.to_csv(output_csv_path, index=False)
-    print(f"Generated processed datasets at {processed_csv_path} and {output_csv_path}.")
+
+    # Canonical destinations
+    destinations = [
+        "data/processed/top50_nominal_and_ppp.csv",
+        "data/output/top50_nominal_and_ppp.csv",
+        "dashboard/data/richest_ppp.csv",
+    ]
+
+    for dest in destinations:
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        processed_df.to_csv(dest, index=False)
+        print(f"[OK] Exported master dataset to {dest}")
 
 
 if __name__ == "__main__":

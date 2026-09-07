@@ -37,12 +37,15 @@ st.markdown("""
 def load_data():
     """Load and prepare the PPP-adjusted dataset."""
     base_path = os.path.dirname(os.path.abspath(__file__))
-    # Try multiple locations
-    for candidate in [
-        os.path.join(base_path, "data", "richest_ppp.csv"),
-        os.path.join("wealth_dashboard", "data", "richest_ppp.csv"),
+    # Prioritize master processed dataset, with local dashboard fallback
+    candidates = [
         "data/processed/top50_nominal_and_ppp.csv",
-    ]:
+        "data/output/top50_nominal_and_ppp.csv",
+        os.path.join(base_path, "data", "richest_ppp.csv"),
+        os.path.join("dashboard", "data", "richest_ppp.csv"),
+        os.path.join("wealth_dashboard", "data", "richest_ppp.csv"),
+    ]
+    for candidate in candidates:
         if os.path.exists(candidate):
             df = pd.read_csv(candidate)
             break

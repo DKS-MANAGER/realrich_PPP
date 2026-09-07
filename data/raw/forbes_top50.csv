@@ -1,4 +1,4 @@
-rank,name,net_worth_usd_billion,primary_country,source
+rank_nominal,name,net_worth_usd,country,source
 1,Elon Musk,342.0,United States,Forbes RT 2026-01-22
 2,Mark Zuckerberg,216.0,United States,Forbes RT 2026-01-22
 3,Jeff Bezos,215.0,United States,Forbes RT 2026-01-22

@@ -116,7 +116,7 @@ Implemented in [`src/models/clustering.py`](src/models/clustering.py), an unsupe
 
 ---
 
-## 📊 Interactive BI Suite (`wealth_dashboard/app.py`)
+## 📊 Interactive BI Suite (`dashboard/app.py`)
 
 The project includes an enterprise-grade, dark-themed Streamlit application structured into 5 analytical views:
 
@@ -131,18 +131,30 @@ The project includes an enterprise-grade, dark-themed Streamlit application stru
 ## 📁 Repository Structure
 
 ```
-PPP/
+realrich-ppp/
 ├── configs/
 │   └── ppp_rates.json                  # Sovereign exchange rates & World Bank PPP conversion factors
+├── dashboard/
+│   ├── app.py                          # 5-tab production Streamlit BI application
+│   ├── requirements.txt                # Dashboard dependencies
+│   ├── assets/theme.css                # Dark UI custom styling
+│   └── README.md                       # Dashboard documentation
 ├── data/
 │   ├── raw/
 │   │   └── forbes_top50.csv            # Validated and strictly sorted raw Forbes dataset
-│   └── processed/
-│       └── top50_nominal_and_ppp.csv   # Standardized master dataset with calculated PPP metrics
-├── data_output/
+│   ├── processed/
+│   │   └── top50_nominal_and_ppp.csv   # Standardized master dataset with calculated PPP metrics
+│   └── output/
+│       └── top50_nominal_and_ppp.csv   # Production export snapshot
+├── docs/
+│   └── analysis_summary.md             # Detailed macroeconomic analysis summary
+├── notebooks/
+│   └── billionaire_ppp_analysis.ipynb  # Interactive analytical & visualization notebook
+├── reports/
 │   ├── report.md                       # Comprehensive economic whitepaper
 │   ├── rankings_tables.md              # Formatted markdown ranking tables
-│   └── top50_nominal_and_ppp.csv       # Production export snapshot
+│   ├── top_movers_summary.md           # Top rank movers executive briefing
+│   └── figures/                        # High-resolution generated charts
 ├── src/
 │   ├── analytics.py                    # Core PPP conversion & rank-shift mathematics
 │   ├── sensitivity.py                  # Macroeconomic FX sensitivity & volatility engine
@@ -151,13 +163,9 @@ PPP/
 │       └── clustering.py               # ML UHNWI archetype segmentation (K-Means)
 ├── tests/
 │   └── test_analytics.py               # Pytest suite with 10 passing unit tests (100% pass rate)
-├── wealth_dashboard/
-│   ├── app.py                          # 5-tab production Streamlit BI application
-│   ├── requirements.txt                # Dashboard dependencies
-│   ├── assets/theme.css                # Dark UI custom styling
-│   └── README.md                       # Dashboard documentation
 ├── .gitignore                          # Clean Python/Data ignore rules
 ├── LICENSE                             # MIT Open Source License
+├── requirements.txt                    # Project dependencies for local & Streamlit Cloud deployment
 └── README.md                           # Flagship technical documentation
 ```
 
@@ -193,7 +201,7 @@ python src/process_data.py
 
 ### 4. Launch Interactive Analytics Dashboard
 ```bash
-streamlit run wealth_dashboard/app.py
+streamlit run dashboard/app.py
 ```
 *Opens the BI application in your browser at `http://localhost:8501`.*
 
