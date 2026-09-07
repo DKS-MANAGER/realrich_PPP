@@ -35,8 +35,9 @@ $$\text{Real PPP Wealth (Int\$)} = \frac{\text{Domestic Net Worth (LCU)}}{P_{\te
 Where:
 * $W_{\text{USD}}$: Nominal Net Worth in Billions USD
 * $E_{\text{LCU/USD}}$: Market Exchange Rate (Local Currency Units per USD)
-* $P_{\text{PPP}}$: World Bank PPP Conversion Factor (Local Currency Units per International Dollar)
-* $\mu = \frac{E_{\text{LCU/USD}}}{P_{\text{PPP}}}$: **PPP Wealth Multiplier**
+* $P_{\text{PPP}}$: World Bank PPP Conversion Factor (LCU per International Dollar)
+* $\mu = \frac{E_{\text{LCU/USD}}}{P_{\text{PPP}}}$: PPP Wealth Multiplier
+* $\Delta R = R_{\text{Nominal}} - R_{\text{PPP}}$: Rank Shift Dynamics
 
 ### 2. Relative Purchasing Power Uplift
 $$\Delta W_{\%} = \left(\frac{\text{Real PPP Wealth} - W_{\text{USD}}}{W_{\text{USD}}}\right) \times 100\% = (\mu - 1) \times 100\%$$
@@ -74,7 +75,7 @@ flowchart TD
     end
 
     subgraph Presentation & Quality Assurance
-        G --> J[Interactive Streamlit Dashboard<br/>wealth_dashboard/app.py]
+        G --> J[Interactive Streamlit Dashboard<br/>dashboard/app.py]
         H --> J
         I --> J
         F --> K[100% Passing Unit Test Suite<br/>tests/test_analytics.py]
