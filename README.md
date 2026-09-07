@@ -1,8 +1,10 @@
 # RealRich: UHNWI Wealth Econometrics & Purchasing Power Parity (PPP) Analytics
 
+[![Live Demo](https://img.shields.io/badge/Streamlit%20Cloud-Live%20Demo-FF4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white)](https://realrichppp-klhtysb93n4bf2sdglf3u2.streamlit.app/)
+
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![Tests](https://img.shields.io/badge/Tests-10%2F10%20Passed-brightgreen.svg?logo=pytest&logoColor=white)](tests/)
-[![Dashboard](https://img.shields.io/badge/Streamlit-Interactive%20BI-FF4B4B.svg?logo=streamlit&logoColor=white)](wealth_dashboard/)
+[![Dashboard](https://img.shields.io/badge/Streamlit-Interactive%20BI-FF4B4B.svg?logo=streamlit&logoColor=white)](https://realrichppp-klhtysb93n4bf2sdglf3u2.streamlit.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > **Institutional-grade quantitative analytics, econometrics, and unsupervised machine learning platform that evaluates global wealth inequality by adjusting Ultra-High-Net-Worth Individual (UHNWI) net worth for sovereign Purchasing Power Parity (PPP), foreign exchange differentials, and macroeconomic price structures.**
