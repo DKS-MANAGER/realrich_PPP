@@ -6,14 +6,22 @@ and generates standardized datasets across data/processed/, data/output/, and da
 
 import os
 import pandas as pd
-from analytics import compute_ppp_wealth, load_ppp_rates
+
+try:
+    from src.analytics import compute_ppp_wealth, load_ppp_rates
+except ImportError:
+    from analytics import compute_ppp_wealth, load_ppp_rates
 
 
 def process_pipeline():
-    raw_path = "data/raw/forbes_top50.csv"
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    raw_path = os.path.join(repo_root, "data", "raw", "forbes_top50.csv")
     if not os.path.exists(raw_path):
-        print(f"Raw file '{raw_path}' not found.")
-        return
+        raw_path_rel = "data/raw/forbes_top50.csv"
+        if os.path.exists(raw_path_rel):
+            raw_path = raw_path_rel
+        else:
+            raise FileNotFoundError(f"Raw file '{raw_path}' not found.")
 
     df = pd.read_csv(raw_path)
 
@@ -39,9 +47,9 @@ def process_pipeline():
 
     # Canonical destinations
     destinations = [
-        "data/processed/top50_nominal_and_ppp.csv",
-        "data/output/top50_nominal_and_ppp.csv",
-        "dashboard/data/richest_ppp.csv",
+        os.path.join(repo_root, "data", "processed", "top50_nominal_and_ppp.csv"),
+        os.path.join(repo_root, "data", "output", "top50_nominal_and_ppp.csv"),
+        os.path.join(repo_root, "dashboard", "data", "richest_ppp.csv"),
     ]
 
     for dest in destinations:
@@ -49,6 +57,8 @@ def process_pipeline():
         processed_df.to_csv(dest, index=False)
         print(f"[OK] Exported master dataset to {dest}")
 
+
+main = process_pipeline
 
 if __name__ == "__main__":
     process_pipeline()
