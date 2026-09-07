@@ -225,15 +225,15 @@ ISO3_MAP = {
     "Belgium": "BEL",
 }
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def load_data():
     """Load and normalize the PPP master dataset with safety fallbacks."""
     base_dir = os.path.dirname(os.path.abspath(__file__))
     candidates = [
-        "data/processed/top50_nominal_and_ppp.csv",
-        "data/output/top50_nominal_and_ppp.csv",
-        os.path.join(base_dir, "data", "richest_ppp.csv"),
         os.path.join(REPO_ROOT, "data", "processed", "top50_nominal_and_ppp.csv"),
+        os.path.join(base_dir, "data", "richest_ppp.csv"),
+        os.path.join(REPO_ROOT, "data", "output", "top50_nominal_and_ppp.csv"),
+        "data/processed/top50_nominal_and_ppp.csv",
     ]
     
     df = None
@@ -387,9 +387,12 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("#### 📚 Metadata")
-    st.caption(f"**Baseline Date:** {config.get('analysis_date', 'Jan 2026')}")
+    st.caption(f"**Baseline Date:** {config.get('analysis_date', 'Sept 2026')}")
     st.caption(f"**Wealth Source:** {config.get('data_source', 'Forbes RT')}")
     st.caption(f"**PPP Indicator:** {config.get('ppp_source', 'World Bank WDI')}")
+    if st.button("🔄 Clear Cache & Reload Data", use_container_width=True):
+        st.cache_data.clear()
+        st.rerun()
     st.markdown("---")
     st.caption("Built with Streamlit, Plotly & Scikit-Learn")
 
