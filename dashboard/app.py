@@ -408,11 +408,11 @@ if filtered_df.empty:
 # ──────────────────────────────────────────────────────────────────────────────
 # 4. HERO SECTION & EXECUTIVE METRICS RIBBON
 # ──────────────────────────────────────────────────────────────────────────────
-st.markdown('<div class="hero-badge">Macroeconomic Analytics & ML Wealth Engine</div>', unsafe_html=True)
-st.markdown('<div class="hero-title">Global Billionaire Wealth: Nominal vs. Purchasing Power Parity</div>', unsafe_html=True)
+st.markdown('<div class="hero-badge">Macroeconomic Analytics & ML Wealth Engine</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-title">Global Billionaire Wealth: Nominal vs. Purchasing Power Parity</div>', unsafe_allow_html=True)
 st.markdown(
     '<div class="hero-subtitle">Evaluating sovereign purchasing power, domestic resource command, and currency friction for the world’s wealthiest individuals.</div>',
-    unsafe_html=True
+    unsafe_allow_html=True
 )
 
 with st.expander("ℹ️ Theoretical Framework & Mathematical Formulation", expanded=False):
@@ -462,7 +462,7 @@ if top_mover is not None:
 else:
     kpi4.metric(label="Top Rank Gainer", value="N/A", delta="0")
 
-st.markdown("<br>", unsafe_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
